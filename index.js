@@ -1,35 +1,38 @@
-const express = require('express'); // Framework web untuk membuat server
-const mongoose = require('mongoose'); // Library untuk koneksi ke MongoDB
-const bodyParser = require('body-parser'); // Middleware untuk membaca data JSON dari request
-const cors = require('cors'); // Middleware untuk mengizinkan komunikasi antar domain
-require('dotenv').config(); // Mengambil variabel lingkungan dari file .env
+const express = require('express'); 
+const mongoose = require('mongoose'); 
+const bodyParser = require('body-parser'); 
+const cors = require('cors'); 
+require('dotenv').config(); 
 
-// Inisialisasi aplikasi Express
+
 const app = express();
 
 // Middleware
-app.use(cors()); // Mengaktifkan CORS
-app.use(bodyParser.json()); // Mem-parsing body request menjadi JSON
+app.use(cors()); 
+app.use(bodyParser.json()); 
 
 // Port
-const PORT = process.env.PORT || 5000; // Port server, default 5000
+const PORT = process.env.PORT || 5000;
 
 // Endpoint dasar untuk mengecek server
 app.get('/', (req, res) => {
-  res.send('API is running...'); // Respon sederhana saat mengakses root endpoint
+  res.send('API is running...'); 
 });
 
 // Jalankan server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`); // Log untuk memastikan server berjalan
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 // Connect mongo
 mongoose.connect(process.env.MONGO_URI, {
-    useNewUrParses: true,
-    useUnifiedTopology: true
-}).then(()=>{
-    console.log('Connected to MongoDB');
-}).catch(()=>{
-    console.log('Database connection error:', err);
-})
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+  }).then(() => {
+    console.log('Connected to MongoDB'); 
+  }).catch((err) => {
+    console.error('Database connection error:', err); 
+  });
+
+const taskRoutes = require('./routes/taskRoutes'); 
+app.use('/api', taskRoutes); 
