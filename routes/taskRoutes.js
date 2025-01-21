@@ -3,10 +3,17 @@ const Task = require('../models/Task');
 
 const router = express.Router(); 
 
-router.get('/tasks', async function (req, res) {
+router.get('/tasks/:id', async function (req, res) {
     try{
-        const tasks = await Task.find();
-        res.status(200).json(tasks);
+        const showTask = await Task.findById(
+            req.params.id, 
+            req.body, 
+            { new: true, runValidators: true } 
+          );
+          if (!showTask) {
+            return res.status(404).json({ error: 'Task not found' }); 
+          }
+          res.status(200).json(showTask); 
     }  catch(err) {
         res.status(500).json({error: err.message});
     }
