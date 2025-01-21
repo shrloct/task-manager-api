@@ -23,3 +23,13 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`); // Log untuk memastikan server berjalan
 });
+
+// Connect mongo
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrParses: true,
+    useUnifiedTopology: true
+}).then(()=>{
+    console.log('Connected to MongoDB');
+}).catch(()=>{
+    console.log('Database connection error:', err);
+})
